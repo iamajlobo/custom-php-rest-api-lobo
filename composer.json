@@ -1,0 +1,20 @@
+{
+    "name": "dict/php-rest-api-lobo",
+    "description": "Custom PHP REST API",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Core\\": "core/",
+            "Config\\": "config/",
+            "Storage\\": "storage/"
+        }
+    },
+    "authors": [
+        {
+            "name": "iamajLobo",
+            "email": "aj.lobo.2004@gmail.com"
+        }
+    ],
+    "require": {}
+}
