@@ -28,25 +28,33 @@ class TestController extends BaseController{
         $this->test_response->success('Data Successfully Retrieved!',200,['users'=>$data]);
     }
 
-    public function show($params) : void
+    public function show(array $params) : void
     {
-        
+        $data = $this->test_service->retrieveById($params[0]);
+        $this->test_response->success('Data Successfully Retrieved!',200,['users'=>$data]);
     }
 
     public function store() : void
     {
         $data = $this->test_request->validated();
         $id = $this->test_service->register($data);
-        $this->test_response->success('Stored Successfully',201,['user'=>$id]);
+        $this->test_response->success('Stored Successfully',201,['user'=> ['id'=>$id]]);
     }
 
-    public function update($params) : void
+    public function update(array $params) : void
     {
-        echo "From TestController Update: {$params[0]}";
+        $data = $this->test_request->validated();
+        $this->test_service->updateByID($params[0],$data);
+        $this->test_response->success('Updated Successfully',200);
     }
 
-    public function destroy($params) : void
+    public function destroy(array $params) : void
     {
-        echo "From TestController Destroy: {$params[0]}";
+        $this->test_service->deleteByID($params[0]);
+        $this->test_response->success('Deleted Successfully',200);
+    }
+
+    public function login() {
+        print_r("Gello");
     }
 }

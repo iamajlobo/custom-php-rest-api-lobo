@@ -1,6 +1,5 @@
 <?php
 declare(strict_types=1);
-
 require_once __DIR__ . '/../vendor/autoload.php';
 
 header("Access-Control-Allow-Origin: http://localhost:5173");
@@ -12,9 +11,11 @@ header("Content-Type: application/json");
 use Core\Exceptions\ErrorHandler;
 use Core\Router;
 
+// Setup Default Error and Exception handler
 set_error_handler([ErrorHandler::class,'handleError']);
 set_exception_handler([ErrorHandler::class,'handleException']);
 
+// Register and Dispatch Routes
 $router = new Router();
 require_once __DIR__ . '/../app/Routes/api.php';
 $router->dispatch();

@@ -1,7 +1,5 @@
 <?php
 namespace App\Repositories;
-use App\Models\Test;
-use Core\Database;
 use PDO;
 
 class TestRepository extends BaseRepository {
@@ -14,6 +12,6 @@ class TestRepository extends BaseRepository {
         $stmt->execute([$email]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         if(is_bool($result)) return false;
-        return ($result['email'] === $email);
+        return $result['email'] === $email;
     }
 }

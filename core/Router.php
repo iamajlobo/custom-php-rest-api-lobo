@@ -5,41 +5,38 @@ class Router {
     private array $routes = [];
     private Request $request;
     private Response $response;
-    public function __construct()
-    {
-        $this->request = new Request();
-        $this->response = new Response();
-    }
+    
+    public function __construct() { $this->request = new Request(); $this->response = new Response();}
 
-    private function add(string $method, string $path,$handler,array $middleware) : void
+    private function add(string $method, string $path,$handler,array $middleware = []) : void
     {
         $this->routes[$method][$path] = ['handler' => $handler, 'middleware' => $middleware]; 
     }
 
-    public function get(string $path, $handler,array $middleware) : void
+    public function get(string $path, $handler,array $middleware = []) : void
     {
         $this->add('GET', $path, $handler, $middleware);
     }
 
-    public function post(string $path,$handler,array $middleware) : void
+    public function post(string $path,$handler,array $middleware = []) : void
     {
         $this->add('POST', $path, $handler, $middleware);
     }
 
 
-    public function put(string $path,$handler,array $middleware) : void
+    public function put(string $path,$handler,array $middleware = []) : void
     {
         $this->add('PUT', $path, $handler, $middleware);
     }
 
 
-    public function patch(string $path,$handler,array $middleware) : void
+    public function patch(string $path,$handler,array $middleware = []) : void
     {
         $this->add('PATCH', $path, $handler, $middleware);
     }
 
 
-    public function delete(string $path,$handler,array $middleware) : void
+    public function delete(string $path,$handler,array $middleware = []) : void
     {
         $this->add('DELETE', $path, $handler, $middleware);
     }
@@ -64,8 +61,7 @@ class Router {
             if(preg_match($pattern,$current_path,$params)){
                 array_shift($params);
                 ['handler' => $handler,'middleware' => $middleware] = $route;
-
-                $this->runMiddlewares(['user'=>['role'=>'admin']],$middleware);    
+                if(!empty($middleware)) $this->runMiddlewares($this->request->user(),$middleware);    
                 $this->call($handler, $params);
                 exit;
             }
@@ -85,7 +81,7 @@ class Router {
         call_user_func([$instance,$action],$params);
     }
 
-    private function runMiddlewares(array $request,array $middleware) : void
+    private function runMiddlewares(array $request,array $middleware = []) : void
     {
         $instances =  array_map(fn($class)=> new $class(),$middleware);
 

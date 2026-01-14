@@ -25,6 +25,11 @@ class Request {
         return $this->data;
     }
 
+    public function user() : array
+    {
+        return ['users'=>$this->data];
+    }
+
     public function only(array $keys) : array
     {
         return array_intersect_key($this->data,array_flip($keys));
@@ -57,7 +62,7 @@ class Request {
         if(!empty($errors)){
             http_response_code(422);
             echo json_encode([
-                'status' => 'Unprocessable Entity',
+                'status' => 'error',
                 'message' => 'Validation Error',
                 'code' => 422,
                 'error' => $errors

@@ -1,17 +1,16 @@
 <?php
 namespace App\Middlewares;
-
+use Core\Response;
 class AuthMiddleware extends BaseMiddleware {
     public function handle(array $request)
     {
+        $response = new Response();
         if(!isset($request['user'])){
-            http_response_code(401);
-            echo json_encode([
-                'status' => 'unauthorized',
+            $response->setStatusCode(401)->json([
+                'status' => 'error',
                 'message' => 'Unauthorized Access is Prohibited!',
                 'code' => 401 
             ]);
-            exit;
         }
 
         return $this->next($request);
